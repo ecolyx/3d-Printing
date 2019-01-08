@@ -32,7 +32,7 @@
 // - Largeur - Width
   Width         = 75;                     
 // - Hauteur - Height  
-  Height        = 60;  
+  Height        = 42;  
 // - Epaisseur - Wall thickness  
   Thick         = 2;//[2:5]  
   
@@ -44,8 +44,10 @@
 // - Tolérance - Tolerance (Panel/rails gap)
   m             = 0.9;
 // Pieds PCB - PCB feet (x4) 
-  PCBFeet       = 1;// [0:No, 1:Yes]
-  TPCBFeet      = 1;// Top [0:No, 1:Yes]
+  PCBFeet       = 1;// Bottom [0:No, 1:Yes]
+  TPCBFeet      = 0;// Top [0:No, 1:Yes]
+  PsuHolder     = 0;// Top [0:No, 1:Yes]
+  LCD128        = 0;// Fpanl [0:No, 1:Yes]
 // - Decorations to ventilation holes
   Vent          = 1;// [0:No, 1:Yes]
 // - Decoration-Holes width (in mm)
@@ -56,7 +58,7 @@
 // - Coin bas gauche - Low left corner X position
 PCBPosX         = -3.8;
 // - Coin bas gauche - Low left corner Y position
-PCBPosY         = 4;
+PCBPosY         = 2;
 // - Longueur PCB - PCB Length
 PCBLength       = 68.6;
 // - Largeur PCB - PCB Width
@@ -105,13 +107,13 @@ LCDWidth        = 30;
 
 /* [STL element to export] */
 //Coque haut - Top shell
-TShell          = 0;// [0:No, 1:Yes]
+TShell          = 1;// [0:No, 1:Yes]
 //Coque bas- Bottom shell
-BShell          = 1;// [0:No, 1:Yes]
+BShell          = 0;// [0:No, 1:Yes]
 //Panneau avant - Front panel
-FPanL           = 0;// [0:No, 1:Yes]
+FPanL           = 1;// [0:No, 1:Yes]
 //Panneau arrière - Back panel  
-BPanL           = 1;// [0:No, 1:Yes]
+BPanL           = 0;// [0:No, 1:Yes]
 //Clips is the extras for screws, etc.
 Clips           = 0;
 
@@ -147,113 +149,154 @@ module Coque(){//Coque - Shell
     difference(){    
         difference(){//sides decoration
             union(){    
-                     difference() {//soustraction de la forme centrale - Substraction Fileted box
-                      
-                        difference(){//soustraction cube median - Median cube slicer
-                            union() {//union               
+                difference() {//soustraction de la forme centrale - Substraction Fileted box
+                    difference(){//soustraction cube median - Median cube slicer
+                        union() {//union               
                             difference(){//Coque    
                                 RoundBox();
                                 translate([Thick/2,Thick/2,Thick/2]){     
-                                        RoundBox($a=Length-Thick, $b=Width-Thick, $c=Height-Thick);
+                                    RoundBox($a=Length-Thick, $b=Width-Thick, $c=Height-Thick);
                                 }
                             }//Fin diff Coque                            
-                                difference(){//largeur Rails        
-                                     translate([Thick+m,Thick/2,Thick/2]){// Rails
-                                          RoundBox($a=Length-((2*Thick)+(2*m)), $b=Width-Thick, $c=Height-(Thick*2));
-                                     }//fin Rails
-                                     translate([((Thick+m/2)*1.55),Thick/2,Thick/2+0.1]){ // +0.1 added to avoid the artefact
-                                          RoundBox($a=Length-((Thick*3)+2*m), $b=Width-Thick, $c=Height-Thick);
-                                     }           
-                                                }//Fin largeur Rails
-                            }//Fin union                                   
-                               translate([-Thick,-Thick,Height/2]){// Cube à soustraire
-                                    cube ([Length+100, Width+100, Height], center=false);
-                                            }                                            
-                                      }//fin soustraction cube median - End Median cube slicer
-                               translate([-Thick/2,Thick,Thick]){// Forme de soustraction centrale 
-                                    RoundBox($a=Length+Thick, $b=Width-Thick*2, $c=Height-Thick);       
-                                    }                          
-                                }                                          
-
-
-                difference(){// wall fixation box legs
-                    union(){
-                        translate([3*Thick +5,Thick,Height/2]){
-                            rotate([90,0,0]){
-                                    $fn=6;
-                                    cylinder(d=16,Thick/2);
-                                    }   
-                            }
-                            
-                       translate([Length-((3*Thick)+5),Thick,Height/2]){
-                            rotate([90,0,0]){
-                                    $fn=6;
-                                    cylinder(d=16,Thick/2);
-                                    }   
-                            }
-
+                            difference(){//largeur Rails        
+                                translate([Thick+m,Thick/2,Thick/2]){// Rails
+                                    RoundBox($a=Length-((2*Thick)+(2*m)), $b=Width-Thick, $c=Height-(Thick*2));
+                                }//fin Rails
+                                translate([((Thick+m/2)*1.55),Thick/2,Thick/2+0.1]){ // +0.1 added to avoid the artefact
+                                    RoundBox($a=Length-((Thick*3)+2*m), $b=Width-Thick, $c=Height-Thick);
+                                }           
+                            }//Fin largeur Rails
+                        }//Fin union                                   
+                        translate([-Thick,-Thick,Height/2]){// Cube à soustraire
+                            cube ([Length+100, Width+100, Height], center=false);
+                        }                                            
+                    }//fin soustraction cube median - End Median cube slicer
+                    translate([-Thick/2,Thick,Thick]){// Forme de soustraction centrale 
+                        RoundBox($a=Length+Thick, $b=Width-Thick*2, $c=Height-Thick);       
+                    }                          
+                }                                          
+                if (TShell==1) {
+                    translate([Length-((3*Thick)+10),2.75,Height/2+4]){
+                        rotate([0,90,0]){
+                            cylinder(d=3,10);
                         }
-                            translate([4,Thick+Filet,Height/2-57]){   
-                             rotate([45,0,0]){
-                                   cube([Length,40,40]);    
-                                  }
-                           }
-                           translate([0,-(Thick*1.46),Height/2]){
-                                cube([Length,Thick*2,10]);
-                           }
+                    }
+                    translate([3*Thick,2.75,Height/2+4]){
+                        rotate([0,90,0]){
+                            cylinder(d=2.7,10);
+                        }
+                    }
+                    difference(){// wall fixation box legs
+                        union(){
+                            translate([3*Thick +5,Thick,Height/2]){
+                                rotate([90,0,0]){
+                                    $fn=6;
+                                    cylinder(d=16,Thick/2);
+                                }   
+                            }
+                                
+                            translate([Length-((3*Thick)+5),Thick,Height/2]){
+                                rotate([90,0,0]){
+                                    $fn=6;
+                                    cylinder(d=16,Thick/2);
+                                }   
+                            }
+                        }
+                        translate([4,Thick+Filet,Height/2-57]){   
+                            rotate([45,0,0]){
+                                cube([Length,40,40]);    
+                            }
+                        }
+                        translate([0,-(Thick*1.46),Height/2]){
+                            cube([Length,Thick*2,10]);
+                        }
                     } //Fin fixation box legs
+                    translate([Length,Width,0]) {
+                        rotate([0,0,180]) {
+                            translate([Length-((3*Thick)+10),2.75,Height/2+4]){
+                                rotate([0,90,0]){
+                                    cylinder(d=3,10);
+                                }
+                            }
+                            translate([3*Thick,2.75,Height/2+4]){
+                                rotate([0,90,0]){
+                                    cylinder(d=2.7,10);
+                                }
+                            }
+                            difference(){// wall fixation box legs
+                                union(){
+                                    translate([3*Thick +5,Thick,Height/2]){
+                                        rotate([90,0,0]){
+                                            $fn=6;
+                                            cylinder(d=16,Thick/2);
+                                        }   
+                                    }
+                                        
+                                    translate([Length-((3*Thick)+5),Thick,Height/2]){
+                                        rotate([90,0,0]){
+                                            $fn=6;
+                                            cylinder(d=16,Thick/2);
+                                        }   
+                                    }
+                                }
+                                translate([4,Thick+Filet,Height/2-57]){   
+                                    rotate([45,0,0]){
+                                        cube([Length,40,40]);    
+                                    }
+                                }
+                                translate([0,-(Thick*1.46),Height/2]){
+                                    cube([Length,Thick*2,10]);
+                                }
+                            } //Fin fixation box legs
+                        } // rotate
+                    } // translate extra legs
+                }
             }
-
-        union(){// outbox sides decorations
-            
-            for(i=[0:Thick:Length/4]){
-
-                // Ventilation holes part code submitted by Ettie - Thanks ;) 
+            union(){// outbox sides decorations
+                for(i=[0:Thick:Length/4]){
+                    // Ventilation holes part code submitted by Ettie - Thanks ;) 
                     translate([10+i,-Dec_Thick+Dec_size,6]){
-                    cube([Vent_width,Dec_Thick,Height/6]);
+                        cube([Vent_width,Dec_Thick,Height/6]);
                     }
                     translate([(Length-10) - i,-Dec_Thick+Dec_size,6]){
-                    cube([Vent_width,Dec_Thick,Height/6]);
+                        cube([Vent_width,Dec_Thick,Height/6]);
                     }
                     translate([(Length-10) - i,Width-Dec_size,6]){
-                    cube([Vent_width,Dec_Thick,Height/6]);
+                        cube([Vent_width,Dec_Thick,Height/6]);
                     }
                     translate([10+i,Width-Dec_size,6]){
-                    cube([Vent_width,Dec_Thick,Height/6]);
+                        cube([Vent_width,Dec_Thick,Height/6]);
                     }
-  
-                
-                    }// fin de for
-               // }
-                }//fin union decoration
-            }//fin difference decoration
+                }// fin de for
+            }//fin union decoration
+        }//fin difference decoration
 
-
+        if (BShell==1) {
             union(){ //sides holes
                 $fn=50;
-                translate([3*Thick+5,20,Height/2+4]){
-                    rotate([90,0,0]){
-                    cylinder(d=2,20);
+                translate([3*Thick-2,2,Height/2-4]){
+                    rotate([0,90,0]){
+                        cylinder(d=3,14);
                     }
                 }
-                translate([Length-((3*Thick)+5),20,Height/2+4]){
-                    rotate([90,0,0]){
-                    cylinder(d=2,20);
+                translate([Length-((3*Thick)+12),2,Height/2-4]){
+                    rotate([0,90,0]){
+                        cylinder(d=3,14);
                     }
                 }
-                translate([3*Thick+5,Width+5,Height/2-4]){
-                    rotate([90,0,0]){
-                    cylinder(d=2,20);
+                translate([3*Thick+5,Width-2,Height/2-4]){
+                    rotate([0,90,0]){
+                        cylinder(d=3,14);
                     }
                 }
-                translate([Length-((3*Thick)+5),Width+5,Height/2-4]){
-                    rotate([90,0,0]){
-                    cylinder(d=2,20);
+                translate([Length-((3*Thick)+12),Width-2,Height/2-4]){
+                    rotate([0,90,0]){
+                        cylinder(d=3,14);
                     }
                 }
-            }//fin de sides holes
-
-        }//fin de difference holes
+            }//fin union de sides holes
+        }
+    }//fin de difference holes
 }// fin coque 
 
 ////////////////////////////// - Experiment - ///////////////////////////////////////////
@@ -376,21 +419,24 @@ module FPanL(){
     difference(){
         color(Couleur2) {
             Panel(Height,Width,Thick,Filet);
-            translate([-8,LCDPosY-6,LCDPosX-6]){
-                difference() {
-                    cube([8,LCDLength+12,LCDWidth+6]);
-                    union() {
-                        translate([3,LCDLength+2.85,6]) rotate([0,0,45]) cube([2,2,LCDWidth+1]);
-                        translate([3,6,6]) rotate([0,0,45]) cube([2,2,LCDWidth+1]);
-                        translate([0,7,6]){
-                            cube([8,LCDLength-2,LCDWidth]);
-                            translate([3,-1,0]){
-                                cube([1.5,LCDLength,LCDWidth]);
+            if (LCD128==1) {
+                translate([-8,LCDPosY-6,LCDPosX-6]){
+                    difference() {
+                        cube([8,LCDLength+12,LCDWidth+6]);
+                        union() {
+                            translate([3,LCDLength+2.85,6]) rotate([0,0,45]) cube([2,2,LCDWidth+1]);
+                            translate([3,6,6]) rotate([0,0,45]) cube([2,2,LCDWidth+1]);
+                            translate([0,7,6]){
+                                cube([8,LCDLength-2,LCDWidth]);
+                                translate([3,-1,0]){
+                                    cube([1.5,LCDLength,LCDWidth]);
+                                }
                             }
                         }
                     }
                 }
             }
+/* switchblocks
             translate([0,24,0]) {
                 difference() {
                     union() { 
@@ -413,19 +459,20 @@ module FPanL(){
                     }
                 }
             }
+*/            
         }
 
         rotate([90,0,90]){
             color(Couleur2){
                 //                     <- Cutting shapes from here ->  
-                SquareHole  (1,LCDPosY+12,LCDPosX+2,26,26,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
+                SquareHole  (0,LCDPosY+12,LCDPosX+2,26,26,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
                 CylinderHole(0,88,28,6.8);       //(On/Off, Xpos, Ypos, Diameter)
                 //                            <- To here -> 
             }
             translate ([-.30,0,-.8]){
 //                     <- Adding text from here ->          
-                LText(1,35,7,"Bauhaus 93:style=Regular",7,"VPDMon 1.1");//(On/Off, Xpos, Ypos, "Font", Size, "Text")
-                LText(1,3,46,"Britannic Bold:style=Regular",7,"7g");//(On/Off, Xpos, Ypos, "Font", Size, "Text")
+                LText(1,10,7,"Bauhaus 93:style=Regular",7,"VPDMon");//(On/Off, Xpos, Ypos, "Font", Size, "Text")
+                LText(1,55,27,"Britannic Bold:style=Regular",7,"7g");//(On/Off, Xpos, Ypos, "Font", Size, "Text")
                 CText(0,20,11.8,"Arial Black",2.4,5,260,25,"1.3.5.7.9");//(On/Off, Xpos, Ypos, "Font", Size, Diameter, Arc(Deg), Starting Angle(Deg),"Text")
 //                            <- To here ->
             }
@@ -446,10 +493,10 @@ module BPanL(Colour){
             SquareHole  (0,8.5,45,80,12,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
             
             // arduino uno power and usb   
-            SquareHole  (1,12.2,7,9,11,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
-            SquareHole  (1,36.7,7,12,10.5,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
-            CylinderHole(1,65,12,7.2);       //(On/Off, Xpos, Ypos, Diameter)
-            CylinderHole(1,80,12,7.2);       //(On/Off, Xpos, Ypos, Diameter)
+            SquareHole  (1,10.2,7,9,11,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
+            SquareHole  (1,38.2,7,12,10.5,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
+            CylinderHole(1,61,15,7.2);       //(On/Off, Xpos, Ypos, Diameter)
+            CylinderHole(1,61,28,7.2);       //(On/Off, Xpos, Ypos, Diameter)
 //                            <- To here -> 
 
             rotate([0,180,0])
@@ -496,18 +543,20 @@ if(TShell==1) {
                     Feet(TPCBLength,TPCBWidth,TFootHeight,TFootDia,TFootHole,0,0,0,0,2);
                 }
             }
-            
-            difference() {
-                translate ([64,18,Thick])
-                    cube([26,36,7]);
-                translate ([67,21,Thick+1])
-                    cube([20,30,7]);
-            }            
-            
-            translate ([86.5,22,Thick+1])
-                foot(3,0,5,1);
-            translate ([68,50,Thick+1])
-                foot(3,0,5,1);
+
+            if (PsuHolder==1) {
+                difference() {
+                    translate ([64,18,Thick])
+                        cube([26,36,7]);
+                    translate ([67,21,Thick+1])
+                        cube([20,30,7]);
+                }            
+                
+                translate ([86.5,22,Thick+1])
+                    foot(3,0,5,1);
+                translate ([68,50,Thick+1])
+                    foot(3,0,5,1);
+            }
         }
     }
 }
