@@ -1,0 +1,10 @@
+[filament]
+name = ABS175
+diameter = 1.75
+multiplierPercent = 100
+printingTemperature = 240
+enableCooling = True
+bedTemperature = 100
+fanSpeedMin = 50
+fanSpeedMax = 100
+minimalLayerTime = 5

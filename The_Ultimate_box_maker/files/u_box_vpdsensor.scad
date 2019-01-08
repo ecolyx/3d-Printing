@@ -28,9 +28,9 @@
 
 /* [Box dimensions] */
 // - Longueur - Length  
-  Length        = 50;       
+  Length        = 55;       
 // - Largeur - Width
-  Width         = 20;                     
+  Width         = 24;                     
 // - Hauteur - Height  
   Height        = 18;  
 // - Epaisseur - Wall thickness  
@@ -112,9 +112,9 @@ LCDFootHeight      = 9.5;
 //Coque haut - Top shell
 TShell          = 0;// [0:No, 1:Yes]
 //Coque bas- Bottom shell
-BShell          = 1;// [0:No, 1:Yes]
+BShell          = 0;// [0:No, 1:Yes]
 //Panneau avant - Front panel
-FPanL           = 1;// [0:No, 1:Yes]
+FPanL           = 0;// [0:No, 1:Yes]
 //Panneau arrière - Back panel  
 BPanL           = 1;// [0:No, 1:Yes]
 
@@ -413,7 +413,7 @@ module BPanL(Colour){
             color(Colour){
 //                     <- Cutting shapes from here ->
             SquareHole  (0,36.7,7,12,10.5,1); //(On/Off, Xpos,Ypos,Length,Width,Filet)
-            CylinderHole(1,Width/2-Thick,Height-9,6.5);       //(On/Off, Xpos, Ypos, Diameter)
+            CylinderHole(1,Width/2-Thick,Height-9,6.8);       //(On/Off, Xpos, Ypos, Diameter)
 //                            <- To here -> 
 
             rotate([0,180,0])
@@ -436,7 +436,7 @@ if(BShell==1) {
     color(Couleur1){ 
         difference() {
             Coque();
-            SquareHole(1,9,Width/2-6.3,16,12.6,0); //(On/Off, Xpos,Ypos,Length,Width,Filet)
+            SquareHole(1,9,Width/2-7.5,20.2,15.7,0); //(On/Off, Xpos,Ypos,Length,Width,Filet)
         }
     }
 
@@ -447,7 +447,7 @@ if(BShell==1) {
             Feet(PCBLength,PCBWidth,FootHeight,FootDia,FootHole,Foot1Offset,Foot2Offset,Foot3Offset,Foot4Offset);
         }
     }
-    foot(30, Width/2, Thick, FootDia,FootHole,Thick+2);
+    foot(35.5, Width/2, Thick, FootDia,FootHole,Thick+2);
 }
 
 if(TShell==1) {

@@ -28,11 +28,11 @@
 
 /* [Box dimensions] */
 // - Longueur - Length  
-  Length        = 100;       
+  Length        = 60;       
 // - Largeur - Width
-  Width         = 102;                     
+  Width         = 60;                     
 // - Hauteur - Height  
-  Height        = 60;  
+  Height        = 30;  
 // - Epaisseur - Wall thickness  
   Thick         = 2;//[2:5]  
   
@@ -45,7 +45,7 @@
   m             = 0.9;
 // Pieds PCB - PCB feet (x4) 
   PCBFeet       = 1;// [0:No, 1:Yes]
-  TPCBFeet      = 1;// Top [0:No, 1:Yes]
+  TPCBFeet      = 0;// Top [0:No, 1:Yes]
 // - Decorations to ventilation holes
   Vent          = 1;// [0:No, 1:Yes]
 // - Decoration-Holes width (in mm)
@@ -54,26 +54,26 @@
 /* [PCB_Feet bottom] */
 //All dimensions are from the center foot axis
 // - Coin bas gauche - Low left corner X position
-PCBPosX         = -3.8;
+PCBPosX         = 0;
 // - Coin bas gauche - Low left corner Y position
-PCBPosY         = 0.5;
+PCBPosY         = 0;
 // - Longueur PCB - PCB Length
-PCBLength       = 68.6;
+PCBLength       = 38.5;
 // - Largeur PCB - PCB Width
-PCBWidth        = 53.3;
+PCBWidth        = 38.5;
 // - Heuteur pied - Feet height
-FootHeight      = 8;
+FootHeight      = 5;
 // - Diamètre pied - Foot diameter
-FootDia         = 6;
+FootDia         = 5;
 // - Diamètre trou - Hole diameter
 FootHole        = 2;  
 // - Foot Inset
 FootInset       = 2.5;
 // feet 1 and 4 are offset horizontally, 2 and 3 are offset vertically
-Foot1Offset     = 11.5;
-Foot2Offset     = 5.2;
-Foot3Offset     = 15.2;
-Foot4Offset     = 12.8;
+Foot1Offset     = 0;
+Foot2Offset     = 0;
+Foot3Offset     = 0;
+Foot4Offset     = 0;
 
 /* [PCB_Feet top] */
 //All dimensions are from the center foot axis
@@ -109,9 +109,9 @@ LCDFootHeight      = 9.5;
 
 /* [STL element to export] */
 //Coque haut - Top shell
-TShell          = 1;// [0:No, 1:Yes]
+TShell          = 0;// [0:No, 1:Yes]
 //Coque bas- Bottom shell
-BShell          = 0;// [0:No, 1:Yes]
+BShell          = 1;// [0:No, 1:Yes]
 //Panneau avant - Front panel
 FPanL           = 0;// [0:No, 1:Yes]
 //Panneau arrière - Back panel  
