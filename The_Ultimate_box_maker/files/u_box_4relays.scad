@@ -522,20 +522,25 @@ if(TShell==1) {
             color(Couleur1){ 
                 difference() {
                     union() { // solid parts
-                        Coque();
-                        translate([TPCBLength+TPCBPosX+1.5,TPCBPosY+3*Thick+33.5,0.45]) {
-                            difference() {
-                                cube([6,27,16]);
-                                union() {
-                                    translate([2,2,0]) {
-                                        cube([2,3,16+Thick]);
-                                        translate([0,6.7,0])
-                                            cube([2,3,16+Thick]);
-                                        translate([0,13.33,0])
-                                            cube([2,3,16+Thick]);
-                                        translate([0,20,0])
-                                            cube([2,3,16+Thick]);
-                                    }
+                        difference() {
+                            l = 27;
+                            w = 6;
+                            h = 19;
+                            union() {
+                                Coque();
+                                translate([TPCBLength+TPCBPosX+1.5,TPCBPosY+3*Thick+33.5,Thick]) {
+                                    cube([w,l,h]);
+                                }
+                            }
+                            union() {
+                                translate([TPCBLength+TPCBPosX+3.5,TPCBPosY+3*Thick+35.5,.4]) {
+                                    cube([2,3,h+Thick]);
+                                    translate([0,l/4,0])
+                                        cube([2,3,h+Thick]);
+                                    translate([0,l/2,0])
+                                        cube([2,3,h+Thick]);
+                                    translate([0,l*.75,0])
+                                        cube([2,3,h+Thick]);
                                 }
                             }
                         }
