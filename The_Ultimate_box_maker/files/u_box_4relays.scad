@@ -525,15 +525,15 @@ if(TShell==1) {
                         difference() {
                             l = 27;
                             w = 6;
-                            h = 19;
+                            h = 16;
                             union() {
                                 Coque();
-                                translate([TPCBLength+TPCBPosX+1.5,TPCBPosY+3*Thick+33.5,Thick]) {
+                                translate([TPCBLength+TPCBPosX+1.5,TPCBPosY+3*Thick+33,Thick]) {
                                     cube([w,l,h]);
                                 }
                             }
                             union() {
-                                translate([TPCBLength+TPCBPosX+3.5,TPCBPosY+3*Thick+35.5,.4]) {
+                                translate([TPCBLength+TPCBPosX+3.5,TPCBPosY+3*Thick+35,.4]) {
                                     cube([2,3,h+Thick]);
                                     translate([0,l/4,0])
                                         cube([2,3,h+Thick]);
